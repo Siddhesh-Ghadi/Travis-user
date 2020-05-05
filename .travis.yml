@@ -3,6 +3,37 @@ arch:
   - amd64
   - ppc64le
 
+services:
+  - docker
+  - mysql
+  - postgresql
+  - mongodb
+  - redis
+  - memcached
+
+sudo: required
+language: erlang
+install: true
+otp_release:
+  - 21.2
+  - 22.0
+cache:
+  directories:
+    - plts
+    - plts_base
+
+before_script: "epmd -daemon"
+
+before_install:
+  - sudo apt-get -y install libsnappy-dev
+  - mysql -e "CREATE DATABASE vmq_test_database;" -uroot
+  - mysql -e "CREATE USER 'vmq_test_user' IDENTIFIED BY 'vmq_test_password';" -uroot
+  - mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'vmq_test_user';" -uroot
+  - psql -c "CREATE DATABASE vmq_test_database;" -U postgres
+  - psql -c "CREATE USER vmq_test_user WITH PASSWORD 'vmq_test_password';" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE vmq_test_database to vmq_test_user;" -U postgres
+  
 script:
-  - arch
   - whoami
+  - arch
+
