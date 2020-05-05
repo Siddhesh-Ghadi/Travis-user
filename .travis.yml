@@ -12,17 +12,6 @@ services:
   - memcached
 
 sudo: required
-language: erlang
-install: true
-otp_release:
-  - 21.2
-  - 22.0
-cache:
-  directories:
-    - plts
-    - plts_base
-
-before_script: "epmd -daemon"
 
 before_install:
   - sudo apt-get -y install libsnappy-dev
